@@ -28,13 +28,14 @@ class Login extends MY_Controller {
     public function index() {
         $this->form_validation->set_rules('user_name', 'Username', 'required');
         $this->form_validation->set_rules('user_password', 'Password', 'required');
+        $json_encode = array();
 
         if ($this->form_validation->run() === FALSE) {
-
             $this->load->view('template/login');
         } else {
-
-            $user_name = array('USER_NAME' => $this->input->post('user_name'));
+            $user_name = array(
+                'USER_NAME' => $this->input->post('user_name')
+            );
 
             if ($this->login_model->cek_user($user_name) > 0) {
                 $data = array(

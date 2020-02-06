@@ -9,6 +9,7 @@ class Home extends CI_Controller {
     public function __construct() {
         parent::__construct();
         if (!$this->session->userdata('SESS_IS_LOGIN')) {
+
             redirect(base_url('login'));
         }
         $this->output->set_header('Last-Modified:' . gmdate('D,d M Y H:i:s') . 'GMT');
@@ -23,8 +24,8 @@ class Home extends CI_Controller {
         $this->load->model('setting_model');
         //$this->load->model('Report_model');
         $this->load->model('ews_model');
-
-        //$this->data['notif_announcement'] = $this->announcement_model->cek_notif();
+        $cab = $this->session->userdata('SESS_USER_BRANCH');
+        $this->data['notif_announcement'] = $this->announcement_model->cek_notif();
         $cab = $this->session->userdata('SESS_USER_BRANCH');
         $this->data['notif_count'] = $this->notifikasi_model->realisasi_no($cab)->num_rows();
         $this->data['notif_isi'] = $this->notifikasi_model->realisasi_no($cab)->result();
@@ -40,8 +41,9 @@ class Home extends CI_Controller {
         $get_tahun = $date->format('Y');
         $month = $date->format('m');
         // $month = '5';
-        //$data['value'] = $this->main_model->get_value_realisasi();
-        //$data['notif'] = $this->main_model->count_data();
+        $data['value'] = $this->main_model->get_value_realisasi();
+        $data['notif'] = $this->main_model->count_data();
+
         // print_r($data['notif']); exit();
         // $test = $this->ews_model->target_tes($month);
         // print_r($test); exit();
@@ -53,7 +55,7 @@ class Home extends CI_Controller {
         $reminderKontrakBA = $this->setting_model->get_data_reminder_kontrak_b_a()->DATA_REMINDER;
         $reminderKontrakBA = $reminderKontrakBA == null ? 0 : $reminderKontrakBA;
 
-        //$data['notif_announcement'] = $this->announcement_model->cek_notif();
+        $data['notif_announcement'] = $this->announcement_model->cek_notif();
         $branch = $this->session->userdata('SESS_USER_BRANCH');
 
         $data4 = array(
@@ -84,7 +86,6 @@ class Home extends CI_Controller {
 
         $this->data['total_start_sub_program'] = $this->ews_model->total_start_sub_program_fix($id_branch, $reminderKontrakBA);
         $this->data['detail_start_sub_program'] = $this->ews_model->detail_start_sub_program_fix($id_branch, $reminderKontrakBA);
-        $this->data['result'] = array();
 
         // REMINDER REALISASI PELAPORAN
         $tempData = $this->ews_model->get_rkap_id_not_current_date_realisasi_pelaporan($id_branch);
@@ -98,6 +99,7 @@ class Home extends CI_Controller {
 
         $id_rkap_duplicate = $this->ews_model->get_id_rkap_duplicate_realisasi_pelaporan($id_branch, $id_rkap_not_current_date);
         $id_real = '';
+
         for ($i = 0; $i < count($id_rkap_duplicate); $i++) {
             if ($id_rkap_duplicate[$i]->RKAP_SUBPRO_ID == $id_rkap_duplicate[$i - 1]->RKAP_SUBPRO_ID) {
                 $id_real = $id_real . $id_rkap_duplicate[$i]->REAL_SUBPRO_ID . ', ';
@@ -115,10 +117,10 @@ class Home extends CI_Controller {
         $this->data['detail_kontrak_b_a'] = $this->ews_model->detail_kontrak_b_a($id_branch, $reminderKontrakBA);
         // $data['posisi_prog_investasi'] = $this->main_model->posisi_prog_investasi($id_branch);
         // print_r($data['posisi_prog_investasi']);
-        $this->data['popupindikator'] = $this->popupindikator2($id_branch);
+        $data['popupindikator'] = $this->popupindikator2($id_branch);
 
         $this->load->view('template/global/header', $this->data);
-        $this->load->view('template/pages/home_index');
+        $this->load->view('template/pages/home_index', $data);
         $this->load->view('template/global/footer');
     }
 

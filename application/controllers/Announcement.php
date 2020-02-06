@@ -17,7 +17,7 @@ class Announcement extends CI_Controller {
         $this->output->set_header('Cache-Control:post-check=0,pre-check=0', false);
         $this->output->set_header('Pragma: no-cache');
 
-        $this->load->model('login_model');
+        //$this->load->model('login_model');
         $this->load->model('log_model');
         $this->load->model('announcement_model');
         $this->load->model('main_model');
@@ -35,14 +35,23 @@ class Announcement extends CI_Controller {
             }
         }
 
-        $this->data['notif_count'] = $this->main_model->count_data();
+        //$this->data['notif_count'] = $this->main_model->count_data();
         $cab = $this->session->userdata('SESS_USER_BRANCH');
         $this->data['notif_count'] = $this->notifikasi_model->realisasi_no($cab)->num_rows();
         $this->data['notif_isi'] = $this->notifikasi_model->realisasi_no($cab)->result();
-        $this->load->library('m_pdf');
+        $this->data['notif_integrasi'] = $this->notifikasi_model->notifintegrasi();
+        //$this->load->library('m_pdf');
     }
 
     public function index() {
+        ini_set('max_execution_time', 0); //0 seconds
+        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
+        $get_bulan = $date->format('Y-m');
+        $get_tahun = $date->format('Y');
+        $month = $date->format('m');
+
+        $this->data['get_cabang'] = $this->main_model->get_cabang();
+        $this->data['get_gauge_value'] = $this->main_model->get_gauge_value($get_tahun);
 
         $data4 = array(
             'USER_ID' => $this->session->userdata('SESS_USER_ID'),
@@ -53,10 +62,10 @@ class Announcement extends CI_Controller {
 
         $this->log_model->add($data4);
 
-        $data['list'] = $this->announcement_model->all();
+        $this->data['list'] = $this->announcement_model->all();
 
         $this->load->view('template/global/header', $this->data);
-        $this->load->view('template/pages/viewannouncement', $data);
+        $this->load->view('template/pages/viewannouncement');
         $this->load->view('template/global/footer');
     }
 

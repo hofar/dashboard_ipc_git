@@ -1,12 +1,9 @@
 <?php
 
-if (!defined('BASEPATH')) {
+if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-}
 
 class Usermanagement extends CI_Controller {
-
-    private $filename = "import_data"; // Kita tentukan nama filenya
 
     public function __construct() {
         parent::__construct();
@@ -26,27 +23,19 @@ class Usermanagement extends CI_Controller {
         $this->load->model('log_model');
         $this->load->model('main_model');
         $this->load->model('announcement_model');
-        $this->load->model('siswamodel');
-
-        $this->data['notif_announcement'] = $this->announcement_model->cek_notif();
+        
+        $this->data['notif_announcement']= $this->announcement_model->cek_notif();
         $cab = $this->session->userdata('SESS_USER_BRANCH');
-        $this->data['notif_count'] = $this->notifikasi_model->realisasi_no($cab)->num_rows();
-        $this->data['notif_isi'] = $this->notifikasi_model->realisasi_no($cab)->result();
-        $this->data['notif_integrasi'] = $this->notifikasi_model->notifintegrasi();
+        $this->data['notif_count']= $this->notifikasi_model->realisasi_no($cab)->num_rows();
+        $this->data['notif_isi']= $this->notifikasi_model->realisasi_no($cab)->result();
     }
 
     public function index() {
-        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
-        $get_bulan = $date->format('Y-m');
-        $get_tahun = $date->format('Y');
-        $month = $date->format('m');
 
         $this->form_validation->set_rules('username', 'search username', 'trim');
-        $this->data['notif_integrasi'] = $this->notifikasi_model->notifintegrasi();
-        $this->data['get_cabang'] = $this->main_model->get_cabang();
-        $this->data['get_gauge_value'] = $this->main_model->get_gauge_value($get_tahun);
 
         if ($this->form_validation->run() === FALSE) {
+
             $data['list'] = $this->user_model->all();
             $this->session->unset_userdata('username');
             $data4 = array(
@@ -57,7 +46,12 @@ class Usermanagement extends CI_Controller {
             );
 
             $this->log_model->add($data4);
+
+            $this->load->view('template/global/header',$this->data);
+            $this->load->view('template/pages/viewusermanagement', $data);
+            $this->load->view('template/global/footer');
         } else {
+
             $key = $this->user_model->search_username();
             $data['list'] = $key;
             $this->session->set_flashdata('username', $this->input->post('username'));
@@ -69,11 +63,11 @@ class Usermanagement extends CI_Controller {
             );
 
             $this->log_model->add($data4);
-        }
 
-        $this->load->view('template/global/header', $this->data);
-        $this->load->view('template/pages/viewusermanagement', $data);
-        $this->load->view('template/global/footer');
+            $this->load->view('template/global/header',$this->data);
+            $this->load->view('template/pages/viewusermanagement', $data);
+            $this->load->view('template/global/footer');
+        }
     }
 
     public function register() {
@@ -95,16 +89,13 @@ class Usermanagement extends CI_Controller {
         $data['groupsAnak1'] = $this->user_model->branch_anak();
         $data['groupsAnak2'] = $this->user_model->posisi_anak();
 
-        $this->load->view('template/global/header', $this->data);
+        $this->load->view('template/global/header',$this->data);
         $this->load->view('template/pages/adduser', $data);
         $this->load->view('template/global/footer');
     }
 
-    public function create() {
-        echo json_encode(array("id" => $this->user_model->create()));
-    }
-
     public function added() {
+
         $username = $this->input->post('username');
         $nipp = $this->input->post('nipp');
         $password = $this->input->post('password');
@@ -116,17 +107,21 @@ class Usermanagement extends CI_Controller {
         $polaemail = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/";
         $polapassword = "/^.{5,}$/";
 
+
         if ($this->user_model->member_konflik($username) > 0 || !preg_match($polapassword, $this->input->post('password')) || !preg_match($polaemail, $this->input->post('email'))) {
 
             if (!preg_match($polapassword, $this->input->post('password'))) {
                 $this->session->set_flashdata('password', 'Password minimal terdiri dari 5 karakter');
             }
+
             if (!preg_match($polaemail, $this->input->post('email'))) {
                 $this->session->set_flashdata('valid_email', 'Email Tidak Valid');
             }
+
             if ($this->user_model->member_konflik($username) > 0) {
                 $this->session->set_flashdata('username', 'Username telah terdaftar sebelumnya');
             }
+
 
             $this->session->set_flashdata('USERNAM', $this->input->post('username'));
             $this->session->set_flashdata('NIP', $this->input->post('nipp'));
@@ -135,6 +130,7 @@ class Usermanagement extends CI_Controller {
 
             redirect(base_url('usermanagement/register'));
         } else {
+
             $data = array(
                 'USER_NAME' => $username,
                 'USER_NIPP' => $nipp,
@@ -145,7 +141,9 @@ class Usermanagement extends CI_Controller {
                 'USER_POSITION' => $posisi,
                 'USER_STATUS' => 1,
             );
+
             // print_r($data); exit()
+
             $this->session->set_userdata($data);
 
             if ($this->user_model->add($data)) {
@@ -182,7 +180,9 @@ class Usermanagement extends CI_Controller {
         $user = $this->user_model->finduser($id);
 
         if (count($user) > 0) {
-            if ($this->form_validation->run() === FALSE) { // jika form belum terisi semua
+
+            if ($this->form_validation->run() === FALSE) {
+
                 $data['groups'] = $this->user_model->all_privilage();
                 $data['groups1'] = $this->user_model->all_branch();
                 $data['groups2'] = $this->user_model->all_posisi();
@@ -193,10 +193,11 @@ class Usermanagement extends CI_Controller {
 
                 $data['list'] = $this->user_model->finduser($id);
 
-                $this->load->view('template/global/header', $this->data);
+                $this->load->view('template/global/header',$this->data);
                 $this->load->view('template/pages/edit_user', $data);
                 $this->load->view('template/global/footer');
-            } else { // jika form sudah diisi semua
+            } else {
+
                 $data = array(
                     'USER_NAME' => $this->input->post('username'),
                     'USER_NIPP' => $this->input->post('nipp'),
@@ -322,21 +323,12 @@ class Usermanagement extends CI_Controller {
         // $this->load->view('template/pages/delete_user_modal', $data);
     }
 
-    // (delete by checked) created by johan & hofar tanggal 37/01/2020
-
-    public function delete_all() {
-
-        $list_id = $this->input->post('USER_ID');
-        // var_dump($list_id);
-        $del_ok = 0;
-        $del_fail = 0;
-        foreach ($list_id as $id) {
-            //$this->User_model->delete_by_id($id);
-
+    public function delete($id) {
             if ($this->user_model->update_user($id)) {
                 // $data6 = array(
                 //     'USER_STATUS' => 2
                 // );
+
                 //$this->user_model->update_is_active($id, $data6);
 
                 $data4 = array(
@@ -348,177 +340,15 @@ class Usermanagement extends CI_Controller {
 
                 $this->log_model->add($data4);
 
-                //$this->session->set_flashdata('success', 'Data berhasil dihapus');
-                $del_fail++;
+                $this->session->set_flashdata('success', 'Data berhasil dihapus');
 
-                //redirect(base_url('usermanagement'));
+                redirect(base_url('usermanagement'));
             } else {
 
-                //$this->session->set_flashdata('fail', 'Data gagal dihapus');
-                //redirect(base_url('usermanagement'));
+                $this->session->set_flashdata('fail', 'Data gagal dihapus');
 
-                $del_ok++;
+                redirect(base_url('usermanagement'));
             }
-        }
-        echo json_encode(array("status" => true, "input" => $list_id, "del_ok" => $del_ok, "del_fail" => $del_fail));
-    }
-
-    public function desain_user() {
-        $date = new DateTime('now', new DateTimeZone('Asia/Jakarta'));
-        $get_bulan = $date->format('Y-m');
-        $get_tahun = $date->format('Y');
-        $month = $date->format('m');
-
-        $this->form_validation->set_rules('username', 'search username', 'trim');
-        $this->data['get_cabang'] = $this->main_model->get_cabang();
-        $this->data['get_gauge_value'] = $this->main_model->get_gauge_value($get_tahun);
-
-        if ($this->form_validation->run() === FALSE) {
-            $data['groups'] = $this->user_model->all_privilage();
-            $data['groups1'] = $this->user_model->all_branch();
-            $data['groups2'] = $this->user_model->all_posisi();
-            $data['groupsPusat1'] = $this->user_model->branch_pusat();
-            $data['groupsPusat2'] = $this->user_model->posisi_pusat();
-            $data['groupsAnak1'] = $this->user_model->branch_anak();
-            $data['groupsAnak2'] = $this->user_model->posisi_anak();
-
-            $data['list'] = $this->user_model->all();
-
-            $this->session->unset_userdata('username');
-            $data4 = array(
-                'USER_ID' => $this->session->userdata('SESS_USER_ID'),
-                'LOG_ACTION' => 'view user',
-                'LOG_IPADD' => $_SERVER['REMOTE_ADDR'],
-                'LOG_URL' => $_SERVER['REQUEST_URI']
-            );
-
-            $this->log_model->add($data4);
-
-            $this->load->view('template/global/header', $this->data);
-            $this->load->view('template/pages/v_desain_user', $data);
-            $this->load->view('template/global/footer');
-        } else {
-            $key = $this->user_model->search_username();
-            $data['list'] = $key;
-            $this->session->set_flashdata('username', $this->input->post('username'));
-            $data4 = array(
-                'USER_ID' => $this->session->userdata('SESS_USER_ID'),
-                'LOG_ACTION' => 'search user',
-                'LOG_IPADD' => $_SERVER['REMOTE_ADDR'],
-                'LOG_URL' => $_SERVER['REQUEST_URI']
-            );
-
-            $this->log_model->add($data4);
-            $this->load->view('template/global/header', $this->data);
-            $this->load->view('template/pages/v_desain_user', $data);
-            $this->load->view('template/global/footer');
-        }
-    }
-
-    public function delete($id) {
-        if ($this->user_model->update_user($id)) {
-            // $data6 = array(
-            //     'USER_STATUS' => 2
-            // );
-            //$this->user_model->update_is_active($id, $data6);
-
-            $data4 = array(
-                'USER_ID' => $this->session->userdata('SESS_USER_ID'),
-                'LOG_ACTION' => 'delete user',
-                'LOG_IPADD' => $_SERVER['REMOTE_ADDR'],
-                'LOG_URL' => $_SERVER['REQUEST_URI']
-            );
-
-            $this->log_model->add($data4);
-
-            $this->session->set_flashdata('success', 'Data berhasil dihapus');
-
-            redirect(base_url('usermanagement'));
-        } else {
-
-            $this->session->set_flashdata('fail', 'Data gagal dihapus');
-
-            redirect(base_url('usermanagement'));
-        }
-    }
-
-    public function import_exc() {
-        $data['siswa'] = $this->siswamodel->view();
-        //$this->load->view('view', $data);
-
-        $this->load->view('template/global/header', $this->data);
-        $this->load->view('template/pages/v_beranda_excel', $data);
-        $this->load->view('template/global/footer');
-    }
-
-    public function form_exc() {
-        $data = array(); // Buat variabel $data sebagai array
-
-        $post_preview = $this->input->post('preview');
-        if ($post_preview) { // Jika user menekan tombol Preview pada form
-            // lakukan upload file dengan memanggil function upload yang ada di SiswaModel.php
-            $upload = $this->siswamodel->upload_file($this->filename);
-
-            if ($upload['result'] == "success") { // Jika proses upload sukses
-                // Load plugin PHPExcel nya
-                include_once APPPATH . 'third_party/PHPExcel.php';
-
-                $excelreader = new PHPExcel_Reader_Excel2007();
-                $loadexcel = $excelreader->load('excel/' . $this->filename . '.xlsx'); // Load file yang tadi diupload ke folder excel
-                $sheet = $loadexcel->getActiveSheet()->toArray(null, true, true, true);
-
-                // Masukan variabel $sheet ke dalam array data yang nantinya akan di kirim ke file form.php
-                // Variabel $sheet tersebut berisi data-data yang sudah diinput di dalam excel yang sudha di upload sebelumnya
-                $data['sheet'] = $sheet;
-            } else { // Jika proses upload gagal
-                $data['upload_error'] = $upload['error']; // Ambil pesan error uploadnya untuk dikirim ke file form dan ditampilkan
-            }
-        }
-
-        //$this->load->view('form', $data);
-        $this->load->view('template/global/header', $this->data);
-        $this->load->view('template/pages/v_form_excel', $data);
-        $this->load->view('template/global/footer');
-    }
-
-    public function import_file_exc() {
-        // Load plugin PHPExcel nya
-        include_once APPPATH . 'third_party/PHPExcel.php';
-
-        $excelreader = new PHPExcel_Reader_Excel2007();
-        $loadexcel = $excelreader->load('excel/' . $this->filename . '.xlsx'); // Load file yang telah diupload ke folder excel
-        $sheet = $loadexcel->getActiveSheet()->toArray(null, true, true, true);
-
-        // Buat sebuah variabel array untuk menampung array data yg akan kita insert ke database
-        $data = array();
-
-        $numrow = 1;
-        $get_ai = $this->siswamodel->get_ai_id()->row()->AI;
-        foreach ($sheet as $row) {
-            // Cek $numrow apakah lebih dari 1
-            // Artinya karena baris pertama adalah nama-nama kolom
-            // Jadi dilewat saja, tidak usah diimport
-            if ($numrow > 1) {
-                // Kita push (add) array data ke variabel data
-                array_push($data, array(
-                    'ID' => (int) $get_ai,
-                    'NIS' => $row['A'], // Insert data nis dari kolom A di excel
-                    'NAMA' => $row['B'], // Insert data nama dari kolom B di excel
-                    'JENIS_KELAMIN' => $row['C'], // Insert data jenis kelamin dari kolom C di excel
-                    'ALAMAT' => $row['D'], // Insert data alamat dari kolom D di excel
-                ));
-                $get_ai++;
-            }
-
-            $numrow++; // Tambah 1 setiap kali looping
-        }
-
-        //var_dump($data);
-        //echo json_encode($data);
-        //die();
-        // Panggil fungsi insert_multiple yg telah kita buat sebelumnya di model
-        $this->siswamodel->insert_multiple($data);
-        redirect("usermanagement/import_exc"); // Redirect ke halaman awal (ke controller siswa fungsi index)
     }
 
 }
