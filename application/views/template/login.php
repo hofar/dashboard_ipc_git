@@ -47,15 +47,16 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
         <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/img/icon.png"/>
-    <!-- END HEAD -->
-    <style>
-        .login_ipc {
-            position: absolute;
-            top: 2.5em;
-            left: 15em;
-            width: 220px;
-        }
-    </style>
+        <!-- END HEAD -->
+        <style>
+            .login_ipc {
+                position: absolute;
+                top: 2.5em;
+                left: 15em;
+                width: 220px;
+            }
+        </style>
+    </head>
 
     <body class=" login">
         <!-- BEGIN : LOGIN PAGE 5-1 -->
@@ -73,7 +74,7 @@ License: You must have a valid license purchased only from themeforest(the above
                         <h1 style="text-align: center;">(CE-MS)</h1>
                         <p style="text-align: justify;"> Capital Expenditure Monitoring System merupakan sebuah sistem yang mampu mengolah data laporan realisasi investasi sekaligus dapat menampilkan rekapitulasi laporan secara representatif dalam bentuk Dashboard. </p>
                         <form action="<?php echo base_url('login'); ?>" class="login-form" method="post" style="margin-top: 40px;">
-                            
+
                             <?php if ($this->session->flashdata('message')): ?>
                                 <div class="alert alert-danger">
                                     <button class="close" data-close="alert"></button>
@@ -171,126 +172,126 @@ License: You must have a valid license purchased only from themeforest(the above
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <!-- END THEME LAYOUT SCRIPTS -->
         <script>
-            $(document).ready(function()
+            $(document).ready(function ()
             {
-                $('#clickmewow').click(function()
+                $('#clickmewow').click(function ()
                 {
                     $('#radio1003').attr('checked', 'checked');
                 });
             })
 
-            var Login = function() {
+            var Login = function () {
 
-            var handleLogin = function() {
+                var handleLogin = function () {
 
-                $('.login-form').validate({
-                    errorElement: 'span', //default input error message container
-                    errorClass: 'help-block', // default input error message class
-                    focusInvalid: false, // do not focus the last invalid input
-                    rules: {
-                        username: {
-                            required: true
+                    $('.login-form').validate({
+                        errorElement: 'span', //default input error message container
+                        errorClass: 'help-block', // default input error message class
+                        focusInvalid: false, // do not focus the last invalid input
+                        rules: {
+                            username: {
+                                required: true
+                            },
+                            password: {
+                                required: true
+                            },
+                            remember: {
+                                required: false
+                            }
                         },
-                        password: {
-                            required: true
+
+                        messages: {
+                            username: {
+                                required: "Username is required."
+                            },
+                            password: {
+                                required: "Password is required."
+                            }
                         },
-                        remember: {
-                            required: false
-                        }
-                    },
 
-                    messages: {
-                        username: {
-                            required: "Username is required."
+                        invalidHandler: function (event, validator) { //display error alert on form submit   
+                            $('.alert-danger', $('.login-form')).show();
                         },
-                        password: {
-                            required: "Password is required."
+
+                        highlight: function (element) { // hightlight error inputs
+                            $(element)
+                                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+                        },
+
+                        success: function (label) {
+                            label.closest('.form-group').removeClass('has-error');
+                            label.remove();
+                        },
+
+                        errorPlacement: function (error, element) {
+                            error.insertAfter(element.closest('.input-icon'));
+                        },
+
+                        submitHandler: function (form) {
+                            form.submit(); // form validation success, call ajax form submit
                         }
-                    },
+                    });
 
-                    invalidHandler: function(event, validator) { //display error alert on form submit   
-                        $('.alert-danger', $('.login-form')).show();
-                    },
-
-                    highlight: function(element) { // hightlight error inputs
-                        $(element)
-                            .closest('.form-group').addClass('has-error'); // set error class to the control group
-                    },
-
-                    success: function(label) {
-                        label.closest('.form-group').removeClass('has-error');
-                        label.remove();
-                    },
-
-                    errorPlacement: function(error, element) {
-                        error.insertAfter(element.closest('.input-icon'));
-                    },
-
-                    submitHandler: function(form) {
-                        form.submit(); // form validation success, call ajax form submit
-                    }
-                });
-
-                $('.login-form input').keypress(function(e) {
-                    if (e.which == 13) {
-                        if ($('.login-form').validate().form()) {
-                            $('.login-form').submit(); //form validation success, call ajax form submit
+                    $('.login-form input').keypress(function (e) {
+                        if (e.which == 13) {
+                            if ($('.login-form').validate().form()) {
+                                $('.login-form').submit(); //form validation success, call ajax form submit
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
-                $('.forget-form input').keypress(function(e) {
-                    if (e.which == 13) {
-                        if ($('.forget-form').validate().form()) {
-                            $('.forget-form').submit();
+                    $('.forget-form input').keypress(function (e) {
+                        if (e.which == 13) {
+                            if ($('.forget-form').validate().form()) {
+                                $('.forget-form').submit();
+                            }
+                            return false;
                         }
-                        return false;
-                    }
-                });
+                    });
 
-                $('#forget-password').click(function(){
-                    $('.login-form').hide();
-                    $('.forget-form').show();
-                });
+                    $('#forget-password').click(function () {
+                        $('.login-form').hide();
+                        $('.forget-form').show();
+                    });
 
-                $('#back-btn').click(function(){
-                    $('.login-form').show();
-                    $('.forget-form').hide();
-                });
-            }
-
-         
-          
-
-            return {
-                //main function to initiate the module
-                init: function() {
-
-                    handleLogin();
-
-                    // init background slide images
-                    $('.login-bg').backstretch([
-                        "<?php echo base_url(); ?>assets_login/pages/img/login/fl1.png",
-                        "<?php echo base_url(); ?>assets_login/pages/img/login/fe.png",
-                        // "<?php echo base_url(); ?>assets_login/pages/img/login/bg3.jpg"
-                        ], {
-                          fade: 1000,
-                          duration: 8000
-                        }
-                    );
-
-                    $('.forget-form').hide();
-
+                    $('#back-btn').click(function () {
+                        $('.login-form').show();
+                        $('.forget-form').hide();
+                    });
                 }
 
-            };
 
-        }();
 
-        jQuery(document).ready(function() {
-            Login.init();
-        });
+
+                return {
+                    //main function to initiate the module
+                    init: function () {
+
+                        handleLogin();
+
+                        // init background slide images
+                        $('.login-bg').backstretch([
+                            "<?php echo base_url(); ?>assets_login/pages/img/login/fl1.png",
+                            "<?php echo base_url(); ?>assets_login/pages/img/login/fe.png",
+                                    // "<?php echo base_url(); ?>assets_login/pages/img/login/bg3.jpg"
+                        ], {
+                            fade: 1000,
+                            duration: 8000
+                        }
+                        );
+
+                        $('.forget-form').hide();
+
+                    }
+
+                };
+
+            }();
+
+            jQuery(document).ready(function () {
+                Login.init();
+            });
         </script>
 
     </body>
