@@ -110,7 +110,6 @@
                             </form>
                         </div>
                     </div>
-
                     <style>
                         .btn-text-hide span {
                             /*display: none;*/
@@ -123,7 +122,6 @@
                             font-size: 16pt;
                         }
                     </style>
-
                     <div class="form-actions" style="margin-top: 20px;" align="right">
                         <a href="javascript:void(0);" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Tambah Data" id="tambah-data">
                             <i class="icon icon-md md-plus-circle"></i>
@@ -141,9 +139,7 @@
                         <a href="<?php echo base_url(); ?>usermanagement" class="btn btn-warning uppercase btnnn" style="display:none">
                             Tampilkan semua data</a>
                     </div>
-
                     <br />
-
                     <div class="table-responsive">
                         <table class="table table-hover dataTable w-full" data-plugin="dataTable" style="font-size:13px">
                             <thead>
@@ -265,13 +261,12 @@
                     <div class="modal fade modal-3d-slit modal-danger" id="hapus" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" tabindex="-1"> 
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form method="post" id="modaldeleteuser" action="<?php echo base_url() ?>usermanagement/delete/<?php echo $list->USER_ID ?>">
+                                <form method="post" id="modaldeleteuser" action="<?php echo base_url() ?>usermanagement/delete/<?php echo $list[0]->USER_ID ?>">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Konfirmasi</h4>
                                     </div>
                                     <div class="modal-body">
-                                        <!-- <input type="text" name="id_user" id="id_user_modal1"> -->
                                         <p>Apakah anda yakin ingin menghapus data ini ?</p>        
                                     </div>
                                     <div class="modal-footer">
@@ -286,13 +281,12 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <?php echo validation_errors(); ?>
-                                <form method="post" id="modaleditstatus" action="<?php echo base_url(); ?>usermanagement/update_status/<?php echo $list->USER_ID; ?>">
+                                <form method="post" id="modaleditstatus" action="<?php echo base_url(); ?>usermanagement/update_status/<?php echo $list[0]->USER_ID; ?>">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Edit Status User</h4>
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     </div> 
                                     <div class="modal-body">
-                                     <!-- <input type="text" name="id_user" id="id_user_modal"> -->
                                         <div class="form-group">
                                             <label>Status :</label>
                                             <div class="input-group">
@@ -300,8 +294,8 @@
                                                     <div class="fa fa-group "></div>
                                                 </div>
                                                 <select name="status" class="form-control" required>
-                                                    <option value="1" <?php echo ($data->USER_STATUS == 1) ? "selected='selected'" : ""; ?>>Aktif</option>
-                                                    <option value="2" <?php echo ($data->USER_STATUS == 2) ? "selected='selected'" : ""; ?>>Non Aktif</option>
+                                                    <option value="1" <?php echo ($list[0]->USER_STATUS == 1) ? "selected='selected'" : ""; ?>>Aktif</option>
+                                                    <option value="2" <?php echo ($list[0]->USER_STATUS == 2) ? "selected='selected'" : ""; ?>>Non Aktif</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -311,7 +305,6 @@
                                         <button type="submit" onclick="edit_status_submit()" class="btn btn-info"><div class="fa fa-pencil"> Ubah</div></button>
                                     </div> 
                                 </form>
-                                <!-- </div>  -->
                             </div>
                         </div>
                     </div>
@@ -536,7 +529,8 @@
 
 <?php
 $combo_user_ = '';
-switch ($row->USER_STATUS) {
+$USER_STATUS = '';
+switch ($list[0]->USER_STATUS) {
     case 1:
         $USER_STATUS = 'Aktif';
         break;

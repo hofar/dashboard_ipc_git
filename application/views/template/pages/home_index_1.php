@@ -11,6 +11,7 @@
         color:#FFF;
         text-align: center;
     }
+
     .green > thead > tr > th {
         vertical-align: bottom;
         background-color: #45B6AF !important;
@@ -18,6 +19,7 @@
         color:#FFF;
         text-align: center;
     }
+
     .black > thead > tr > th {
         vertical-align: bottom;
         background-color: #000000 !important;
@@ -32,11 +34,13 @@
         color:#FFF;
         text-align: center;
     }
+
     .parent{
         height: 100%;
         width: 100%;
         overflow: hidden;
     }
+
     .child{
         width: 100%;
         height: 100%;
@@ -44,10 +48,12 @@
         padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
         box-sizing: content-box; /* So the width will be 100% + 17px */
     }
+
     .modal-responsive {
         width: 800px;
         margin-top: 0px;
     }
+
     .modal-size {
         width: 1000px;
         height: 500px;
@@ -73,6 +79,7 @@
             display: none;
         }       
     }
+
     @media(max-width: 414px){
         .modal-responsive {
             width: 393px !important;
@@ -90,6 +97,7 @@
             display: none;
         }      
     }
+
     @media(max-width: 375px){
         .modal-responsive {
             width: 366px !important;
@@ -107,6 +115,7 @@
             display: none;
         }      
     }
+
     @media(max-width: 360px){
         .modal-responsive {
             width: 340px !important;
@@ -131,15 +140,19 @@
         border-radius: 0px;
         padding: 7px;
     }
+
     .li-custom {
         padding: 1.5%;
     }
+
     .li-custom:hover {
         background-color: #e8e8e8;
     }
+
     .amcharts-chart-div{
         max-height:680px !important;
     }
+
     .row {
         display: -ms-flexbox;
         display: flex;
@@ -147,30 +160,39 @@
         flex-wrap: wrap;
         margin-right: -1.0715rem;
     }
+
+
+
     .cards{
         margin-bottom:15px;
         padding-bottom:10px;
         background-color:#FFF;
     }
+
     .newTable{
         font-size:13px !important
     }
+
     .headTable{
         font-weight:bold;
         background-color:#F3F3F3;
     }
+
     .btnHead{
         width:100px;
     }
+
     a{
         text-decoration:none;
         color:#666;
         cursor:pointer;
     }
+
     a:hover{
         text-decoration:none;
         color:#F60;
     }
+
 </style>
 <div class="page">
     <div class="page-content">
@@ -745,9 +767,9 @@
         <div class="row">
             <div class="panel panel-default modal-responsive" style="margin-bottom:0 !important;">
                 <div class="headPanel" style="background-color:#144967">
-                    <?php foreach ($result as $post): ?>
+                    <!-- <?php foreach ($result as $post): ?>
                         <?php echo $post->BRANCH_NAME; ?> 
-                    <?php endforeach; ?>
+                    <?php endforeach ?> -->
                     <button type="submit"  id="close_place_awal" class="btn btn-danger btn-sm pull-right"><span class="fa fa-close"></span></button>
                     <center>
                         <h3 class="panel-title" style="padding-top: 7.5px;color:#FFF">
@@ -878,6 +900,8 @@ class="btn btn-xs btn-success" style="margin-bottom:5px;">Report</button> -->
                 </div>
             </div>
         </div>
+
+
     </div>
 
     <div id="placeholder" style=" display: none;">

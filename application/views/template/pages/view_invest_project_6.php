@@ -7,9 +7,11 @@
         background-color:#EBEBEB;
         font-size:14px
     }
+
     .table > tbody > tr > td {
         border: 1px solid #ddd;
     }
+
     .row {
         display: -ms-flexbox;
         display: flex;
@@ -18,31 +20,39 @@
         margin-right: -1.0715rem;
         margin-left: -1.0715rem;
     }
+
     a{
         text-decoration:none !important;
     }
+
     .labelGrid{
         font-size:12px;
         color:#999;
     }
+
     .headTable{
         font-size:14px !important;
         color:#666 !important;
         background-color:#F3F3F3 !important;
     }
+
     .isiGrid{
         font-size:15px;
         font-weight:600;
     }
+
     .isiGrid3{
         font-size:14px;
         font-weight:400;
         color:#666
     }
+
     .isiGrid2{
         font-size:15px;
         font-weight:600;
     }
+
+
 </style>
 
 <div class="page">
@@ -341,7 +351,10 @@
                             </span>
                         </div>
                     <?php endif; ?>
-                    <button type="button" class="btn btn-success mb-4 pull-right" data-toggle="modal" data-target="#exampleModal1">Create Investasi</button>
+                    <div class="pull-right mb-4">
+                        <button type="button" class="btn btn-default mr-1" onclick="reload_table()">Reload</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal1">Create Investasi</button>
+                    </div>
                     <div class="table-responsive" >
                         <table class="table table-hover dataTable w-full" style="font-size:13px" id="table1">
                             <thead>
@@ -400,7 +413,7 @@
 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="#" method="POST" id="form-modal1">
+            <form action="#" method="POST" id="formtabel1">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel1">Input Investasi</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -408,113 +421,133 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1"> Entitas</label>
-                            <input type="text" class="form-control" id="entitas" placeholder="Entitas" name="entitas">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1"> Project Number</label>
-                            <input type="text" class="form-control" id="project_number" placeholder="Project Number" name="project_number">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Judul Investai</label>
-                            <input type="text" class="form-control" id="judul_invest" placeholder="Judul Invest" name="judul_invest">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Trans Duration</label>
-                            <input type="text" class="form-control" id="trans_duration" placeholder="Trans Duration" name="trans_duration">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Jenis Investasis</label>
-                            <select name="jenis_investasi" class="form-control" data-validation="required" data-validation-error-msg="Silahkan Pilih Jenis Investasi" id="jenis_investasi">
-                                <option value="">-- Pilih Jenis Investasi --</option>
-                                <?php
-                                foreach ($groups2 as $row) {
-                                    if ($act == 'add') {
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"> Entitas</label>
+                        <input type="text" class="form-control" id="Entitas" placeholder="Entitas" name="entitas">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1"> Project Number</label>
+                        <input type="text" class="form-control" id="project_number" placeholder="Project Number" name="project_number">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Judul Investai</label>
+                        <input type="text" class="form-control" id="judul_invest" placeholder="Judul Invest" name="judul_invest">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Trans Duration</label>
+                        <input type="text" class="form-control" id="trans_duration" placeholder="Trans Duration" name="trans_duration">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Jenis Investasis</label>
+                        <!-- <input type="text" class="form-control" id="jenis_investasi" placeholder="Jenis Investasi"> -->
+                        <select name="jenis_investasi" class="form-control" data-validation="required" data-validation-error-msg="Silahkan Pilih Jenis Investasi" id="jenis_investasi">
+                            <option value="">-- Pilih Jenis Investasi --</option>
+                            <?php
+                            foreach ($groups2 as $row) {
+                                if ($act == 'add') {
+                                    echo '<option value="' . $row->INVS_TYPE_ID . '">' . $row->INVS_TYPE_NAME . '</option>';
+                                } else {
+                                    if ($list->RKAP_INVS_TYPE == $row->INVS_TYPE_ID) {
+
+                                        echo '<option selected value="' . $row->INVS_TYPE_ID . '">' . $row->INVS_TYPE_NAME . '</option>';
+                                    } else {
+
                                         echo '<option value="' . $row->INVS_TYPE_ID . '">' . $row->INVS_TYPE_NAME . '</option>';
-                                    } else {
-                                        if ($list->RKAP_INVS_TYPE == $row->INVS_TYPE_ID) {
-
-                                            echo '<option selected value="' . $row->INVS_TYPE_ID . '">' . $row->INVS_TYPE_NAME . '</option>';
-                                        } else {
-
-                                            echo '<option value="' . $row->INVS_TYPE_ID . '">' . $row->INVS_TYPE_NAME . '</option>';
-                                        }
                                     }
                                 }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Jenis Aktiva</label>
-                            <select name="jenis_aktiva" class="form-control" data-validation="required" data-validation-error-msg="Silahkan Pilih Jenis Aktiva" id="jenis_aktiva">
-                                <option value="">-- Pilih Jenis Aktiva --</option>
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Jenis Aktiva</label>
+                        <!-- <input type="text" class="form-control" id="jenis_aktiva" placeholder="Jenis Aktiva"> -->
+                        <select name="jenis_aktiva" class="form-control" data-validation="required" data-validation-error-msg="Silahkan Pilih Jenis Aktiva" id="jenis_aktiva">
+                            <option value="">-- Pilih Jenis Aktiva --</option>
 
-                                <?php
-                                foreach ($groups1 as $row) {
-                                    if ($act == 'add') {
+                            <?php
+                            foreach ($groups1 as $row) {
+                                if ($act == 'add') {
+                                    echo '<option value="' . $row->ASSETS_ID . '">' . $row->ASSETS_NAME . '</option>';
+                                } else {
+                                    if ($list->RKAP_INVS_ASSETS == $row->ASSETS_ID) {
+
+                                        echo '<option selected value="' . $row->ASSETS_ID . '">' . $row->ASSETS_NAME . '</option>';
+                                    } else {
+
                                         echo '<option value="' . $row->ASSETS_ID . '">' . $row->ASSETS_NAME . '</option>';
-                                    } else {
-                                        if ($list->RKAP_INVS_ASSETS == $row->ASSETS_ID) {
-
-                                            echo '<option selected value="' . $row->ASSETS_ID . '">' . $row->ASSETS_NAME . '</option>';
-                                        } else {
-
-                                            echo '<option value="' . $row->ASSETS_ID . '">' . $row->ASSETS_NAME . '</option>';
-                                        }
                                     }
                                 }
-                                ?>
-                            </select>
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Input WBS</label>
+                        <input type="text" class="form-control" id="input_wbs" placeholder="Input WBS" name="input_wbs">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Organization</label>
+                        <input type="text" class="form-control" id="organization" placeholder="Organization" name="organization">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Nilai Kebutuhan Dana</label>
+                        <input type="text" class="form-control" id="nilai" placeholder="Nilai Kebutuhan Dana" name="nilai">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Tahun Investasi</label>
+                        <!-- <input type="text" class="form-control" id="iahun_investasi" placeholder="Tahun Investasi"> -->
+                        <select name="tahun_investasi" class="form-control" data-validation="required" data-validation-error-msg="Silahkan Pilih Tahun Investasi" id="tahun_investasi">
+                            <option value="">--Pilih Tahun Investasi--</option>
+                            <option value="2007" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2007') ? 'selected' : '' ?> >2007</option>;
+                            <option value="2008" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2008') ? 'selected' : '' ?> >2008</option>;
+                            <option value="2009" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2009') ? 'selected' : '' ?> >2009</option>;
+                            <option value="2010" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2010') ? 'selected' : '' ?> >2010</option>;
+                            <option value="2011" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2011') ? 'selected' : '' ?> >2011</option>;
+                            <option value="2012" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2012') ? 'selected' : '' ?> >2012</option>;
 
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Input WBS</label>
-                            <input type="text" class="form-control" id="input_wbs" placeholder="Input WBS" name="input_wbs">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Organization</label>
-                            <input type="text" class="form-control" id="organization" placeholder="Organization" name="organization">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Nilai Kebutuhan Dana</label>
-                            <div class="input-group-addon">
-                                Rp &nbsp;&nbsp;&nbsp;<input type="text" class="form-control" id="nilai" placeholder="Nilai Kebutuhan Dana" name="nilai">
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="exampleFormControlInput1">Status</label>
-                            <input type="text" class="form-control" id="status" placeholder="Status" readonly name="status">
-                        </div>
-                    </div>   
+                            <option value="2013" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2013') ? 'selected' : '' ?> >2013</option>;
+                            <option value="2014" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2014') ? 'selected' : '' ?> >2014</option>;
+                            <option value="2015" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2015') ? 'selected' : '' ?> >2015</option>;
+                            <option value="2016" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2016') ? 'selected' : '' ?> >2016</option>;
+                            <option value="2017" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2017') ? 'selected' : '' ?> >2017</option>;
+                            <option value="2018" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2018') ? 'selected' : '' ?> >2018</option>;
+                            <option value="2019" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2019') ? 'selected' : '' ?> >2019</option>;
+                            <option value="2020" <?php echo ($act == 'add') ? '' : ($list->RKAP_INVS_YEAR == '2020') ? 'selected' : '' ?> >2020</option>;
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Status</label>
+                        <input type="text" class="form-control" id="status" placeholder="Status" readonly name="status">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="btn_save1">Save & Next</button>
+                    <button type="submit" class="btn btn-primary" id="btn_save1">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-<!-- Modal 2-->
 
+<!-- Modal 2-->
 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form action="#" method="POST" id="form-modal2">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel2">Create modal2</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="table-responsive"> 
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Create modal2</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" method="POST" id="form2">
+                    <div class="table-responsive">
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th width="col">Tahun RKAP</th>
+                                    <th scope="col">Tahun RKAP</th>
                                     <th scope="col">Nilai RKAP</th>
                                     <th scope="col">Target Triwulan 1</th>
                                     <th scope="col">Target Triwulan 2</th>
@@ -535,141 +568,161 @@
                                 </tr>
 
                             </tbody>
-                        </table>                    
-                    </div>                           
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary" id="bten_save2">Save & Next</button>
-                </div>
-            </form>
+                        </table>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="bten_save2">Save changes</button>
+            </div>
         </div>
     </div>
 </div>
-<!-- akhir modal 2 -->
 
-<!-- awal modal gantt chart -->
-<div class="modal fade" id="modal_gchart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- modal mtabel 1 -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Modal Gantt Chart</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <div align="center" class="panelCustom" style="background-color:#F5F5F5">
-                        <div id="timeline" style="height:220px; width:100%; font-size:12px !important">
-                            <div style="position: relative;">
-                                <div dir="ltr" style="position: relative; width: 899px; height: 220px;">
-                                    <div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%;">
-                                        <svg width="899" height="220" aria-label="A chart." style="overflow: hidden;">
-                                        <defs id="_ABSTRACT_RENDERER_ID_0"></defs>
-                                        <g>
-                                        <text text-anchor="middle" x="174" y="191.05" font-family="Arial" font-size="13" font-weight="bold" stroke="none" stroke-width="0" fill="#000000">Jan</text>
-                                        <text text-anchor="middle" x="174" y="206.05" font-family="Arial" font-size="13" font-weight="bold" stroke="none" stroke-width="0" fill="#000000"> 2020</text>
-                                        <text text-anchor="middle" x="266.04" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Apr</text>
-                                        <text text-anchor="middle" x="358.08000000000004" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Jul</text>
-                                        <text text-anchor="middle" x="451.13142857142856" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Oct</text>
-                                        <text text-anchor="middle" x="544.1828571428571" y="191.05" font-family="Arial" font-size="13" font-weight="bold" stroke="none" stroke-width="0" fill="#000000">Jan</text>
-                                        <text text-anchor="middle" x="544.1828571428571" y="206.05" font-family="Arial" font-size="13" font-weight="bold" stroke="none" stroke-width="0" fill="#000000"> 2021</text>
-                                        <text text-anchor="middle" x="635.2114285714285" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Apr</text>
-                                        <text text-anchor="middle" x="727.2514285714286" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Jul</text>
-                                        <text text-anchor="middle" x="820.3028571428572" y="191.05" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#000000">Oct</text>
-                                        </g>
-                                        <g></g>
-                                        <g></g>
-                                        </svg>
-                                        <div style="height: 170px; overflow: hidden scroll; width: 899px; position: absolute; top: 0px; left: 0px;">
-                                            <svg width="899" height="204.95999999999998" aria-label="A chart." style="overflow: hidden;">
-                                            <defs id="_ABSTRACT_RENDERER_ID_1"></defs>
-                                            <g>
-                                            <rect x="0" y="0" width="899" height="40.992" stroke="none" stroke-width="0" fill="#ffffff"></rect>
-                                            <path d="M174,0L174,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M266.04,0L266.04,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M358.08000000000004,0L358.08000000000004,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M451.13142857142856,0L451.13142857142856,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M544.1828571428571,0L544.1828571428571,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M635.2114285714285,0L635.2114285714285,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M727.2514285714286,0L727.2514285714286,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M820.3028571428572,0L820.3028571428572,40.992" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <rect x="0" y="40.992" width="899" height="40.992" stroke="none" stroke-width="0" fill="#e6e6e6"></rect>
-                                            <path d="M174,40.992L174,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M266.04,40.992L266.04,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M358.08000000000004,40.992L358.08000000000004,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M451.13142857142856,40.992L451.13142857142856,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M544.1828571428571,40.992L544.1828571428571,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M635.2114285714285,40.992L635.2114285714285,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M727.2514285714286,40.992L727.2514285714286,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M820.3028571428572,40.992L820.3028571428572,81.984" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <rect x="0" y="81.984" width="899" height="40.992" stroke="none" stroke-width="0" fill="#ffffff"></rect>
-                                            <path d="M174,81.984L174,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M266.04,81.984L266.04,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M358.08000000000004,81.984L358.08000000000004,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M451.13142857142856,81.984L451.13142857142856,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M544.1828571428571,81.984L544.1828571428571,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M635.2114285714285,81.984L635.2114285714285,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M727.2514285714286,81.984L727.2514285714286,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M820.3028571428572,81.984L820.3028571428572,122.976" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <rect x="0" y="122.976" width="899" height="40.992" stroke="none" stroke-width="0" fill="#e6e6e6"></rect>
-                                            <path d="M174,122.976L174,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M266.04,122.976L266.04,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M358.08000000000004,122.976L358.08000000000004,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M451.13142857142856,122.976L451.13142857142856,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M544.1828571428571,122.976L544.1828571428571,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M635.2114285714285,122.976L635.2114285714285,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M727.2514285714286,122.976L727.2514285714286,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M820.3028571428572,122.976L820.3028571428572,163.968" stroke="#ffffff" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <rect x="0" y="163.968" width="899" height="40.992" stroke="none" stroke-width="0" fill="#ffffff"></rect>
-                                            <path d="M174,163.968L174,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M266.04,163.968L266.04,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M358.08000000000004,163.968L358.08000000000004,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M451.13142857142856,163.968L451.13142857142856,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M544.1828571428571,163.968L544.1828571428571,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M635.2114285714285,163.968L635.2114285714285,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M727.2514285714286,163.968L727.2514285714286,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M820.3028571428572,163.968L820.3028571428572,204.95999999999998" stroke="#e6e6e6" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M0,40.992L899,40.992" stroke="#b7b7b7" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M0,81.984L899,81.984" stroke="#b7b7b7" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M0,122.976L899,122.976" stroke="#b7b7b7" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <path d="M0,163.968L899,163.968" stroke="#b7b7b7" stroke-width="1" fill-opacity="1" fill="none"></path>
-                                            <text text-anchor="end" x="161" y="25.046" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#4d4d4d">Pembangunan Pondasi…</text>
-                                            <text text-anchor="end" x="161" y="66.038" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#4d4d4d">Realisasi 1</text>
-                                            <text text-anchor="end" x="161" y="107.02999999999999" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#4d4d4d">Addendum 1</text>
-                                            <text text-anchor="end" x="161" y="148.02200000000002" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#4d4d4d">Addendum 2</text>
-                                            <text text-anchor="end" x="161" y="189.014" font-family="Arial" font-size="13" stroke="none" stroke-width="0" fill="#4d4d4d">Penyesaian Pembangu…</text>
-                                            <rect x="0" y="0" width="899" height="204.95999999999998" stroke="#9a9a9a" stroke-width="1" fill-opacity="1" fill="none"></rect>
-                                            </g>
-                                            <g></g>
-                                            <g>
-                                            <rect x="175" y="9" width="182.08000000000004" height="22.991999999999997" stroke="none" stroke-width="0" fill="#4285f4"></rect>
-                                            <rect x="542.1600000000001" y="49.992" width="339.8399999999999" height="22.991999999999997" stroke="none" stroke-width="0" fill="#db4437"></rect>
-                                            <rect x="542.1600000000001" y="90.984" width="339.8399999999999" height="22.991999999999997" stroke="none" stroke-width="0" fill="#f4b400"></rect>
-                                            <rect x="542.1600000000001" y="131.976" width="333.7714285714285" height="22.991999999999997" stroke="none" stroke-width="0" fill="#0f9d58"></rect>
-                                            <rect x="359.08000000000004" y="172.968" width="183.08000000000004" height="22.991999999999997" stroke="none" stroke-width="0" fill="#ab47bc"></rect>
-                                            </g>
-                                            <g></g>
-                                            <g></g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div aria-hidden="true" style="display: none; position: absolute; top: 230px; left: 909px; white-space: nowrap; font-family: Arial; font-size: 13px; font-weight: bold;"> 2021</div>
-                                <div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+
+                                <th scope="col">Handle</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
-<!--akhir modal gantt chart-->
+<!-- akhir modal tabel -->
+
+<!-- awal modal tabel 2 -->
+<!-- modal mtabel 1 -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive" >
+                    <table class="table table-borderless" id="inv_table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                                <th scope="col">Handle</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- akhir modal tabel -->
+<!-- akhir modal 2 -->
+
+<!-- mtabel 3 modal -->
+<div class="modal fade" id="exampleModal6" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                                <th scope="col">Handle</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+                                <td><input type="text" class="form-control" id="Entitas" placeholder="Entitas"></td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ahir modal tabel 3 -->
 
 <script type="text/javascript">
+    var table;
+
     function kebutuhansort() {
         var kebutuhan_val = $("#kebutuhan_select").val();
         if (kebutuhan_val > 0) {
@@ -716,96 +769,43 @@
                     tbody += '<td>' + v[5] + '</td>';
                     tbody += '<td></td>';
                     tbody += '<td></td>';
-
                     tbody += '</tr>';
                 });
 
                 $('#table1').children('tbody').html(tbody);
 
-                $('#table1').DataTable({
+                table = $('#table1').DataTable({
                     "order": [[0, "desc"]]
                 });
             }
         });
     }
-
-    //Save invest
-    $('#btn_save1').on('click', function () {
-        var entitas = $('#entitas').val();
-        var project_number = $('#project_number').val();
-        var judul_invest = $('#judul_invest').val();
-        var trans_duration = $('#trans_duration').val();
-        var jenis_investasi = $('#jenis_investasi').val();
-        var jenis_aktiva = $('#jenis_aktiva').val();
-        var input_wbs = $('#input_wbs').val();
-        var organization = $('#organization').val();
-        var nilai = $('#nilai').val();
-        // var tahun_investasi         = $('#tahun_investasi').val();
-        var status = $('#status').val();
-        $.ajax({
-            type: "POST",
-            url: "<?php echo site_url('rkapinvestasi/save_inves') ?>",
-            dataType: "JSON",
-            data: {entitas: entitas, project_number: project_number, judul_invest: judul_invest, trans_duration: trans_duration
-                , jenis_investasi: jenis_investasi, jenis_aktiva: jenis_aktiva, input_wbs: input_wbs, organization: organization, nilai: nilai,
-                status: status},
-            success: function (data) {
-                $('[name="entitas"]').val("");
-                $('[name="project_number"]').val("");
-                $('[name="judul_invest"]').val("");
-                $('[name="trans_duration"]').val("");
-                $('[name="jenis_investasi"]').val("");
-                $('[name="jenis_aktiva"]').val("");
-                $('[name="input_wbs"]').val("");
-                $('[name="organization"]').val("");
-                $('[name="nilai"]').val("");
-                // $('[name="tahun_investasi"]').val("");
-                $('[name="status"]').val("");
-                $('#exampleModal1').modal('hide');
-                $('#exampleModal2').modal('show');
-                // reload_table();
-                // list_invest();
-                // location.reload() ;
-                // table.reload();
-                // table.ajax.reload();
-            }
-        });
-        return false;
-    });
-    // menutup modal pertama  modal 1 kemudian membuka modal 2
-    $('#exampleModal1').on('hidden.bs.modal', function (e) {
-        //$('#exampleModal2').modal('show');
-    });
-    $('#exampleModal2').on('hidden.bs.modal', function (e) {
-        $('#modal_gchart').modal('show');
-    });
-    $('#form-modal1').submit(function (e) {
-        e.preventDefault();
-
-        $('#exampleModal1').modal('hide');
-        $('#exampleModal2').modal('show');
-    });
-    $('#form-modal2').submit(function (e) {
-        e.preventDefault();
-
-        $('#exampleModal2').modal('hide');
-        $('#exampleModal3').modal('show');
-    });
-    $(".reset").click(function () {
-        $(this).closest('form').find("input[type=text], textarea").val("");
-        alert('asdaduka');
-    });
-
     function togleFilter() {
         $("#conFilter").slideToggle(300);
     }
-    window.onload = function () {
-        $("#rkapinvestasi").attr("class", "site-menu-item active");
+    function reload_table() {
+        $('#table1').dataTable().fnClearTable();
+        $('#table1').dataTable().fnDestroy();
+        list_invest();
     }
 
     $(document).ready(function () {
-        //toltip button
         $('[data-toggle="tooltip"]').tooltip();
+        $("#rkapinvestasi").attr("class", "site-menu-item active");
+        // menutup modal pertama  modal 1 kemudian membuka modal 2
+        $('#exampleModal1').on('hidden.bs.modal', function (e) {
+            //$('#exampleModal2').modal('show');
+        });
+        $('#form-modal1').submit(function (e) {
+            e.preventDefault();
+
+            $('#exampleModal1').modal('hide');
+            $('#exampleModal2').modal('show');
+        });
+        $(".reset").click(function () {
+            $(this).closest('form').find("input[type=text], textarea").val("");
+            alert('asdaduka');
+        });
 
         list_invest();
     });

@@ -1,6 +1,6 @@
 <script type="text/javascript">
-    window.onload=function(){
-        $("#user_management").attr("class","site-menu-item active");
+    window.onload = function () {
+        $("#user_management").attr("class", "site-menu-item active");
     }
 </script>
 <style type="text/css">
@@ -8,42 +8,37 @@
         vertical-align: bottom;
         border: 1px solid #ddd;
         text-align: center;
-		color:#666;
-		background-color:#EBEBEB;
-		font-size:14px
-}
-
-.table > tbody > tr > td {
-    border: 1px solid #ddd;
-}
-
-.row {
-	  display: -ms-flexbox;
-	  display: flex;
-	  -ms-flex-wrap: wrap;
-	  flex-wrap: wrap;
-	  margin-right: -1.0715rem;
-	  margin-left: -1.0715rem;
-	}
+        color:#666;
+        background-color:#EBEBEB;
+        font-size:14px
+    }
+    .table > tbody > tr > td {
+        border: 1px solid #ddd;
+    }
+    .row {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: -1.0715rem;
+        margin-left: -1.0715rem;
+    }
 </style>
 <div class="page">
-<div class="page-content">
-    <ol class="breadcrumb">
-    <li class="breadcrumb-item">
-        <i class="fa fa-home fa-lg"></i>
-        <a class="icon wb-home" href="<?php echo base_url(); ?>home">Dashboard</a>
-    </li>
-    <li class="breadcrumb-item active">User Management</li>
-</ol>
-<div class="headTab">
-    <i class="icon md-face"></i> User Management
-</div>
-<div class="panels">       
-        
-
-        <!-- BEGIN PAGE CONTENT INNER -->
-
-           <div class="col-md-12 col-sm-12">
+    <div class="page-content">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home fa-lg"></i>
+                <a class="icon wb-home" href="<?php echo base_url(); ?>home">Dashboard</a>
+            </li>
+            <li class="breadcrumb-item active">User Management</li>
+        </ol>
+        <div class="headTab">
+            <i class="icon md-face"></i> User Management
+        </div>
+        <div class="panels">       
+            <!-- BEGIN PAGE CONTENT INNER -->
+            <div class="col-md-12 col-sm-12">
                 <?php if ($this->session->flashdata('login')): ?>
                     <div class="note note-info note-bordered">
                         <p>
@@ -87,12 +82,12 @@
 
                                         <div class="form-group">
                                             <?php
-                                                        if ($this->session->flashdata('username')):
-                                                            $username = $this->session->flashdata('username');
-                                                        else :
-                                                            $username = "";
-                                                        endif
-                                                    ?>
+                                            if ($this->session->flashdata('username')):
+                                                $username = $this->session->flashdata('username');
+                                            else :
+                                                $username = "";
+                                            endif
+                                            ?>
                                             <label class="lbl control-label col-lg-4 col-sm-3 col-xs-12">Username</label>
                                             <div class="col-lg-8 col-sm-9 col-xs-12" style="margin-bottom: 20px; padding: 0;">
                                                 <input type= "text" name= "username" value="<?php echo $username; ?>" class="form-control">
@@ -108,18 +103,18 @@
                             </form>
                         </div>
                     </div>
-                
+
 
                     <div class="form-actions" style="margin-top: 20px;" align="right">
                         <a href="<?php echo base_url(); ?>usermanagement/register" class="btn btn-success btn-round" style="width:150px">
-                        Tambah</a>
-                        
+                            Tambah</a>
+
                         <a href="<?php echo base_url(); ?>usermanagement" class="btn btn-warning uppercase btnnn" style="display:none">
-                        Tampilkan semua data</a>
+                            Tampilkan semua data</a>
                     </div>
-					
+
                     <br />
-                    
+
                     <div>
                         <table class="table table-hover dataTable w-full" data-plugin="dataTable" style="font-size:13px">
                             <thead>
@@ -133,7 +128,7 @@
                                     <th class="headTable">Cabang</th>
                                     <th class="headTable">Posisi</th>
                                     <th class="headTable">Status</th>
-                                    
+
 
                                 </tr>
                             </thead>
@@ -153,30 +148,33 @@
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                <?php $no = 0; foreach ($list as $row): $no++;?>
+                                <?php
+                                $no = 0;
+                                foreach ($list as $row): $no++;
+                                    ?>
                                     <tr>
                                         <td align="center"><?php echo $no; ?></td>
                                         <td align="center">
-                                           
-                                           <div class="btn-group">
-                                              <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1"
-                                                data-toggle="dropdown" aria-expanded="false">Tools</button>
-                                              <div class="dropdown-menu animate" aria-labelledby="exampleAnimationDropdown1"
-                                                role="menu">
-                                               
-                                               <a href="<?php echo base_url() ?>usermanagement/update/<?php echo $row->USER_ID ?>" 
-                                                class="dropdown-item" 
-                                                title="Edit Data" role="menuitem">
-                                                   <i class="icon md-account" ></i>  Edit Data
-                                                </a>
-                                                <!-- <input type="text" name="id_user" id="id_user" value="<?php echo $row->USER_ID ?>"> -->
-                                                 <a href="#" onclick="btn_delete_user(<?php echo $row->USER_ID ?>)" 
-                                            class="dropdown-item" title="Hapus Data" role="menuitem" data-toggle="modal" data-target="#hapus">
-                                            <i class="icon md-delete" ></i> Hapus Data</a>
-                                                
-                                              </div>
+
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" id="exampleAnimationDropdown1"
+                                                        data-toggle="dropdown" aria-expanded="false">Tools</button>
+                                                <div class="dropdown-menu animate" aria-labelledby="exampleAnimationDropdown1"
+                                                     role="menu">
+
+                                                    <a href="<?php echo base_url() ?>usermanagement/update/<?php echo $row->USER_ID ?>" 
+                                                       class="dropdown-item" 
+                                                       title="Edit Data" role="menuitem">
+                                                        <i class="icon md-account" ></i>  Edit Data
+                                                    </a>
+                                                    <!-- <input type="text" name="id_user" id="id_user" value="<?php echo $row->USER_ID ?>"> -->
+                                                    <a href="#" onclick="btn_delete_user(<?php echo $row->USER_ID ?>)" 
+                                                       class="dropdown-item" title="Hapus Data" role="menuitem" data-toggle="modal" data-target="#hapus">
+                                                        <i class="icon md-delete" ></i> Hapus Data</a>
+
+                                                </div>
                                             </div>
-                                          </td>
+                                        </td>
                                         <td><?php echo $row->USER_NAME; ?></td>
                                         <td><?php echo $row->USER_NIPP; ?></td>
                                         <td><?php echo $row->USER_EMAIL; ?></td>
@@ -184,24 +182,24 @@
                                         <td style="color:#F60"><?php echo $row->BRANCH_NAME; ?></td>
                                         <td><?php echo $row->POSITION_NAME; ?></td>
                                         <!-- <td><?php echo $row->USER_STATUS; ?></td> -->
-                                         <td align="center">
-                                            <!-- <input type="text" name="id_user" id="id_user" value="<?php echo $row->USER_ID ?>"> -->
-                                            <a onclick="btn_edit_stat(<?php echo $row->USER_ID ?>)" class="btn btn-sm btn-outline btn-primary" style="color:#fff !important;" data-toggle="modal" data-target="#editstatus"> <?php 
-                                                                        switch ($row->USER_STATUS) {
-                                                                                case 1:
-                                                                                    $USER_STATUS = 'Aktif';
-                                                                                    break;
-                                                                                case 2:
-                                                                                    $USER_STATUS = 'Non Aktif';
-                                                                                    break;
+                                        <td align="center">
+                                           <!-- <input type="text" name="id_user" id="id_user" value="<?php echo $row->USER_ID ?>"> -->
+                                            <a onclick="btn_edit_stat(<?php echo $row->USER_ID ?>)" class="btn btn-sm btn-outline btn-primary" style="color:#fff !important;" data-toggle="modal" data-target="#editstatus"> <?php
+                                                switch ($row->USER_STATUS) {
+                                                    case 1:
+                                                        $USER_STATUS = 'Aktif';
+                                                        break;
+                                                    case 2:
+                                                        $USER_STATUS = 'Non Aktif';
+                                                        break;
 
-                                                                                default:
-                                                                                    # code...
-                                                                                    break;
-                                                                            }
-                                                                        echo $USER_STATUS;
-                                                                        ?></a></td>
-                                        
+                                                    default:
+                                                        # code...
+                                                        break;
+                                                }
+                                                echo $USER_STATUS;
+                                                ?></a></td>
+
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>                                   
@@ -211,7 +209,7 @@
                     <div class="modal fade modal-3d-slit modal-danger" id="hapus" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" tabindex="-1"> 
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form method="post" id="modaldeleteuser" action="<?php echo base_url() ?>usermanagement/delete/<?php echo $list->USER_ID ?>">
+                                <form method="post" id="modaldeleteuser" action="<?php echo base_url() ?>usermanagement/delete/<?php echo $list[0]->USER_ID ?>">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                                         <h4 class="modal-title">Konfirmasi</h4>
@@ -229,74 +227,72 @@
                         </div>
                     </div>
                     <div class="modal fade modal-3d-flip-vertical modal-info" id="editstatus" role="dialog" >
-                             <div class="modal-dialog">
-                                 <div class="modal-content">
-                                        <?php echo validation_errors(); ?>
-                                        <form method="post" id="modaleditstatus" action="<?php echo base_url(); ?>usermanagement/update_status/<?php echo $list->USER_ID; ?>">
-                                              <div class="modal-header">
-                                                <h4 class="modal-title">Edit Status User</h4>
-                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                              </div> 
-                                              <div class="modal-body">
-                                               <!-- <input type="text" name="id_user" id="id_user_modal"> -->
-                                                     <div class="form-group">
-                                                            <label>Status :</label>
-                                                            <div class="input-group">
-                                                                 <div class="input-group-addon">
-                                                                    <div class="fa fa-group "></div>
-                                                                 </div>
-                                                                  <select name="status" class="form-control" required>
-                                                                    <option value="1" <?php echo ($data->USER_STATUS == 1) ? "selected='selected'" : ""; ?>>Aktif</option>
-                                                                    <option value="2" <?php echo ($data->USER_STATUS == 2) ? "selected='selected'" : ""; ?>>Non Aktif</option>
-                                                                  </select>
-                                                                </div>
-                                                      </div>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <?php echo validation_errors(); ?>
+                                <form method="post" id="modaleditstatus" action="<?php echo base_url(); ?>usermanagement/update_status/<?php echo $list[0]->USER_ID; ?>">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edit Status User</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div> 
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Status :</label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <div class="fa fa-group "></div>
                                                 </div>
-                                                <div class="modal-footer">
-                                                    <button class="btn btn-default btn-pure" data-dismiss="modal"><div class="fa fa-ban"></div> Batal</button>
-                                                    <button type="submit" onclick="edit_status_submit()" class="btn btn-info"><div class="fa fa-pencil"> Ubah</div></button>
-                                                </div> 
-                                      </form>
-                                      <!-- </div>  -->
-                                 </div>
+                                                <select name="status" class="form-control" required>
+                                                    <option value="1" <?php echo ($list[0]->USER_STATUS == 1) ? "selected='selected'" : ""; ?>>Aktif</option>
+                                                    <option value="2" <?php echo ($list[0]->USER_STATUS == 2) ? "selected='selected'" : ""; ?>>Non Aktif</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default btn-pure" data-dismiss="modal"><div class="fa fa-ban"></div> Batal</button>
+                                        <button type="submit" onclick="edit_status_submit()" class="btn btn-info"><div class="fa fa-pencil"> Ubah</div></button>
+                                    </div> 
+                                </form>
                             </div>
-                      </div>
+                        </div>
+                    </div>
                     <div class="modal animated fadeIn" id="edit" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-controls-modal="myModal">
-                             <div class="modal-dialog">
-                                 <div class="modal-content">
-                                         
-                                 </div>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
                             </div>
-                      </div>
-                <!-- END PORTLET-->
+                        </div>
+                    </div>
+                    <!-- END PORTLET-->
+                </div>
             </div>
+            <!-- END PAGE CONTENT INNER -->
         </div>
-        <!-- END PAGE CONTENT INNER -->
     </div>
-</div>
-<!-- END CONTENT -->
+    <!-- END CONTENT -->
 </div>
 
 <script>
-	$('#table').dataTable( {
-    	paging: true,
-    	searching: true
-	});
+    $('#table').dataTable({
+        paging: true,
+        searching: true
+    });
 </script>
 <script type="text/javascript">
-     var link_base = "<?php echo base_url(); ?>";
-     function btn_edit_stat(id) {
+    var link_base = "<?php echo base_url(); ?>";
+    function btn_edit_stat(id) {
         // alert(id);
         $.ajax({
             type: 'GET',
-           url: link_base+'/tanpa_auth/edit_modalstatus/'+ id,
+            url: link_base + '/tanpa_auth/edit_modalstatus/' + id,
             // data: {id : id},
             success: function (data) {
                 // console.log(data);
-                document.getElementById("modaleditstatus").action = link_base+'/usermanagement/update_status/'+id;
+                document.getElementById("modaleditstatus").action = link_base + '/usermanagement/update_status/' + id;
                 var obj = JSON.parse(data);
                 // $('#editstatus').modal();
-                 $("#id_user_modal").val(obj.USER_ID);
+                $("#id_user_modal").val(obj.USER_ID);
                 // alert(obj.USER_ID);
                 // $('#editstatus').find('.modal-body').html(data);
             }
@@ -309,14 +305,14 @@
         // alert(id);
         $.ajax({
             type: 'GET',
-           url: link_base+'/tanpa_auth/delete_modal/'+ id,
+            url: link_base + '/tanpa_auth/delete_modal/' + id,
             // data: {id : id},
             success: function (data) {
                 // console.log(data);
-                document.getElementById("modaldeleteuser").action = link_base+'/usermanagement/delete/'+id;
+                document.getElementById("modaldeleteuser").action = link_base + '/usermanagement/delete/' + id;
                 var obj = JSON.parse(data);
                 // $('#editstatus').modal();
-                 $("#id_user_modal1").val(obj.USER_ID);
+                $("#id_user_modal1").val(obj.USER_ID);
                 // alert(obj.USER_ID);
                 // $('#editstatus').find('.modal-body').html(data);
             }
