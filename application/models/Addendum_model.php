@@ -1,7 +1,8 @@
 <?php
 
-if (!defined('BASEPATH'))
+if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
+}
 
 class addendum_model extends CI_Model {
 
@@ -24,7 +25,7 @@ class addendum_model extends CI_Model {
     public function add($data) {
         return $this->db->insert('TX_SUB_PROGRAM_ADDENDUM', $data);
     }
-    
+
     public function add_max_data_again($persen_max) {
         return $this->db->insert('TX_RKAP_SUB_PROGRAM_MONTHLY', $persen_max);
     }
@@ -53,13 +54,14 @@ class addendum_model extends CI_Model {
     }
 
     public function all_addmonth($get_tahun, $id, $is_addendum) {
-       $result = $this->db->query("SELECT YEARS, SUBPRO_VALUE, RKAP_SUBPRO_ID, SUBPRO_MONTH, SUBPRO_YEARS, CREATED_AT
+        $result = $this->db->query("SELECT YEARS, SUBPRO_VALUE, RKAP_SUBPRO_ID, SUBPRO_MONTH, SUBPRO_YEARS, CREATED_AT
                 FROM
                 (SELECT TX_RKAP_SUB_PROGRAM_MONTHLY.*, TO_CHAR(TX_RKAP_SUB_PROGRAM_MONTHLY.SUBPRO_YEARS, 'YYYY-MM') AS YEARS 
                 FROM TX_RKAP_SUB_PROGRAM_MONTHLY 
                 WHERE RKAP_SUBPRO_ID = '$id' AND IS_ADDENDUM = '$is_addendum')
                 WHERE YEARS >= '$get_tahun' ");
-        return $result->result();;
+        return $result->result();
+        ;
     }
 
     public function cek_is_addendum($id) {
@@ -92,8 +94,7 @@ class addendum_model extends CI_Model {
         return $result;
     }
 
-    public function cek_addendum_yyn($id)
-    {
+    public function cek_addendum_yyn($id) {
         $result = $this->db->query("SELECT count(*) as addv from tx_sub_program_addendum
         where rkap_subpro_id = $id and is_deleted = 0");
         return $result->result()[0]->ADDV;
@@ -119,22 +120,20 @@ class addendum_model extends CI_Model {
         return $result;
     }
 
-    public function coba()
-    {
+    public function coba() {
         $result = $this->db->query("select * from tm_assets");
-        return $result->result();   
+        return $result->result();
     }
 
-    public function ambiladendumakhir($id)
-    {
+    public function ambiladendumakhir($id) {
         $result = $this->db->query("SELECT * from tx_sub_program_addendum
         where rkap_subpro_id = $id and is_deleted = 0
         order by subpro_add_id desc");
-        return $result;   
+        return $result;
     }
 
     //--------------------------------------
-     public function last_month($id) {
+    public function last_month($id) {
         $this->db->select('TX_RKAP_SUB_PROGRAM_MONTHLY.SUBPRO_MONTH');
         $this->db->from('TX_RKAP_SUB_PROGRAM_MONTHLY');
         $where = array('TX_RKAP_SUB_PROGRAM_MONTHLY.RKAP_SUBPRO_ID' => $id);
@@ -149,12 +148,12 @@ class addendum_model extends CI_Model {
         return $result->result_array();
     }
 
-    public function get_years_max($id , $max_is_addendum_set) {
+    public function get_years_max($id, $max_is_addendum_set) {
         $result = $this->db->query("select min(SUBPRO_YEARS) as SUBPRO_YEARS from TX_RKAP_SUB_PROGRAM_MONTHLY where RKAP_SUBPRO_ID = '$id' and IS_ADDENDUM = '$max_is_addendum_set' ");
         return $result->result_array();
     }
 
-    public function get_years_max_edit($id , $max_is_addendum_set) {
+    public function get_years_max_edit($id, $max_is_addendum_set) {
         $result = $this->db->query("select max(SUBPRO_YEARS) as SUBPRO_YEARS from TX_RKAP_SUB_PROGRAM_MONTHLY where RKAP_SUBPRO_ID = '$id' and IS_ADDENDUM = '$max_is_addendum_set' ");
         return $result->result_array();
     }
@@ -163,12 +162,12 @@ class addendum_model extends CI_Model {
         $result = $this->db->query("select max(SUBPRO_YEARS) as SUBPRO_YEARS from TX_RKAP_SUB_PROGRAM_MONTHLY where RKAP_SUBPRO_ID = '$id'");
         return $result->result_array();
     }
-    
+
     public function get_persen_max($id) {
         $result = $this->db->query("select * from (SELECT * FROM TX_RKAP_SUB_PROGRAM_MONTHLY WHERE RKAP_SUBPRO_ID = '$id' ORDER BY SUBPRO_VALUE desc) where rownum <= 1");
         return $result->row();
     }
-    
+
     public function cek_duplikat_max($id) {
         $result = $this->db->query("SELECT SUBPRO_MONTH, COUNT(*)SUBPRO_MONTH FROM TX_RKAP_SUB_PROGRAM_MONTHLY WHERE RKAP_SUBPRO_ID = '$id' GROUP BY SUBPRO_MONTH HAVING COUNT(SUBPRO_MONTH) > 1");
         return $result->row();
@@ -264,13 +263,13 @@ class addendum_model extends CI_Model {
         $data_sebelumnya = $this->db->query("select * FROM TX_SUBPROGRAM_ADDENDUM_HISTORY WHERE RKAP_SUBPRO_ID='" . $id_subpro . "' AND HISTORY_SUBPRO_ADD_ID < '" . $id_history . "'");
 
         $id_sebelumnya = "";
-        if ($cek_sebelumnya->num_rows() >1) {
+        if ($cek_sebelumnya->num_rows() > 1) {
             $id_sebelumnya = $cek_sebelumnya->row()->HISTORY_SUBPRO_ADD_ID;
             $this->db->select('TX_SUBPROGRAM_ADDENDUM_HISTORY.*');
             $this->db->from('TX_SUBPROGRAM_ADDENDUM_HISTORY');
             $where = array('TX_SUBPROGRAM_ADDENDUM_HISTORY.HISTORY_SUBPRO_ADD_ID' => $id_sebelumnya);
             $this->db->where($where);
-             // $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.IS_DELETED', 0);
+            // $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.IS_DELETED', 0);
             $query = $this->db->get();
             return $query->row();
         } else {
@@ -290,7 +289,7 @@ class addendum_model extends CI_Model {
             $this->db->from('TX_SUBPROGRAM_ADDENDUM_HISTORY');
             $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.RKAP_SUBPRO_ID', $id_subpro);
             $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.HISTORY_SUBPRO_ADD_ID', $id_history);
-             // $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.IS_DELETED', 0);
+            // $this->db->where('TX_SUBPROGRAM_ADDENDUM_HISTORY.IS_DELETED', 0);
             $this->db->order_by('HISTORY_SUBPRO_ADD_ID', 'desc');
             $query = $this->db->get();
             return $query->row();
@@ -298,25 +297,24 @@ class addendum_model extends CI_Model {
     }
 
     public function data_history_by_monthly($id_subpro) {
-            $this->db->select('COUNT(RKAP_SUBPRO_ID) as RKAP_SUBPRO_ID');
-            $this->db->from('TX_RKAP_SUB_PROGRAM_MONTHLY');
-            $this->db->where('RKAP_SUBPRO_ID', $id_subpro);
-            $this->db->where('IS_ADDENDUM', 0);
-            $query = $this->db->get();
-            return $query->row();
+        $this->db->select('COUNT(RKAP_SUBPRO_ID) as RKAP_SUBPRO_ID');
+        $this->db->from('TX_RKAP_SUB_PROGRAM_MONTHLY');
+        $this->db->where('RKAP_SUBPRO_ID', $id_subpro);
+        $this->db->where('IS_ADDENDUM', 0);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function data_history_by_years($id_subpro) {
-            $this->db->select_max('SUBPRO_YEARS');
-            $this->db->from('TX_RKAP_SUB_PROGRAM_MONTHLY');
-            $this->db->where('RKAP_SUBPRO_ID', $id_subpro);
-            $this->db->where('IS_ADDENDUM', 0);
-            $query = $this->db->get();
-            return $query->row();
+        $this->db->select_max('SUBPRO_YEARS');
+        $this->db->from('TX_RKAP_SUB_PROGRAM_MONTHLY');
+        $this->db->where('RKAP_SUBPRO_ID', $id_subpro);
+        $this->db->where('IS_ADDENDUM', 0);
+        $query = $this->db->get();
+        return $query->row();
     }
 
-    public function delete_monthly($id_subpro, $last_month)
-    {
+    public function delete_monthly($id_subpro, $last_month) {
         return $this->db->delete('TX_RKAP_SUB_PROGRAM_MONTHLY', array('RKAP_SUBPRO_ID' => $id_subpro, 'IS_ADDENDUM' => $last_month));
     }
 
@@ -506,7 +504,7 @@ class addendum_model extends CI_Model {
         return $this->db->update('TX_SUB_PROGRAM_ADDENDUM', $data, array('SUBPRO_ADD_ID' => $id));
     }
 
-     public function update_history($id, $data) {
+    public function update_history($id, $data) {
         return $this->db->update('TX_SUBPROGRAM_ADDENDUM_HISTORY', $data, array('HISTORY_SUBPRO_ADD_ID' => $id));
     }
 

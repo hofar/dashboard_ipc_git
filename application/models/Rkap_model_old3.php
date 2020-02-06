@@ -11,14 +11,14 @@ class rkap_model extends CI_Model {
         return $this->db->get('TR_BRANCH')->result();
     }
 
-    public function get_insert_before($data, $id) {
+    function get_insert_before($data, $id) {
         $this->db->set('TX_RKAP_INVESTATION.PICTURE_BEFORE', $data['PICTURE_BEFORE']);
         $this->db->set('TX_RKAP_INVESTATION.IS_UPLOADED_BEFORE', $data['IS_UPLOADED_BEFORE']);
         $this->db->where('TX_RKAP_INVESTATION.RKAP_INVS_ID', $id);
         return $this->db->update('TX_RKAP_INVESTATION');
     }
 
-    public function get_insert_after($data, $id) {
+    function get_insert_after($data, $id) {
         $this->db->set('TX_RKAP_INVESTATION.PICTURE_AFTER', $data['PICTURE_AFTER']);
         $this->db->where('TX_RKAP_INVESTATION.RKAP_INVS_ID', $id);
         return $this->db->update('TX_RKAP_INVESTATION');
@@ -1073,47 +1073,6 @@ class rkap_model extends CI_Model {
         return $query->result();
     }
 
-    public function indikator_yyn_new($branch, $tgl) {
-        if ($tgl == 1) {
-            $sel = 'RKAP_INVS_QUARTER_I / 3';
-        } else if ($tgl == 2) {
-            $sel = 'RKAP_INVS_QUARTER_I / 3 * 2';
-        } else if ($tgl == 3) {
-            $sel = 'RKAP_INVS_QUARTER_I';
-        } else if ($tgl == 4) {
-            $sel = 'RKAP_INVS_QUARTER_I + ( RKAP_INVS_QUARTER_II / 3 )';
-        } else if ($tgl == 5) {
-            $sel = 'RKAP_INVS_QUARTER_I + ( RKAP_INVS_QUARTER_II / 3 * 2 )';
-        } else if ($tgl == 6) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II';
-        } else if ($tgl == 7) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + ( RKAP_INVS_QUARTER_III / 3 )';
-        } else if ($tgl == 8) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + ( RKAP_INVS_QUARTER_III / 3 * 2 )';
-        } else if ($tgl == 9) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + RKAP_INVS_QUARTER_III';
-        } else if ($tgl == 10) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + RKAP_INVS_QUARTER_III + ( RKAP_INVS_QUARTER_IV / 3 )';
-        } else if ($tgl == 11) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + RKAP_INVS_QUARTER_III + ( RKAP_INVS_QUARTER_IV / 3 * 2 )';
-        } else if ($tgl == 12) {
-            $sel = 'RKAP_INVS_QUARTER_I + RKAP_INVS_QUARTER_II + RKAP_INVS_QUARTER_III +  RKAP_INVS_QUARTER_IV';
-        }
-
-        $query = $this->db->query("SELECT bb.BRANCH_NAME,aa.rkap_invs_id,aa.targetz,NVL(bb.realisasi,0) as realisasi from (select rkap_invs_id,( $sel ) as targetz 
-        from tx_rkap_investation
-        where is_deleted = 0) aa join (
-        SELECT c.BRANCH_NAME,a.rkap_invs_id,a.RKAP_INVS_TITLE,sum(e.REAL_SUBPRO_VAL) as realisasi
-        FROM TX_RKAP_INVESTATION a
-        LEFT JOIN TM_USERS b ON a.RKAP_INVS_USER_ID = b.USER_ID
-        LEFT JOIN TR_BRANCH c ON b.USER_BRANCH = c.BRANCH_ID
-        LEFT JOIN (select * from TX_RKAP_SUB_PROGRAM where IS_DELETED = 0) d ON a.RKAP_INVS_ID = d.RKAP_SUBPRO_INVS_ID
-        LEFT JOIN (select * from TX_REAL_SUB_PROGRAM where IS_DELETED = 0 and REAL_SUBPRO_YEAR = TO_CHAR(sysdate,'YYYY')) e ON d.RKAP_SUBPRO_ID = e.RKAP_SUBPRO_ID
-        WHERE a.IS_DELETED =0
-        group by c.BRANCH_NAME,a.rkap_invs_id,a.RKAP_INVS_TITLE ORDER BY a.RKAP_INVS_ID DESC) bb on aa.rkap_invs_id = bb.rkap_invs_id");
-        return $query->result();
-    }
-
     public function indikator_yyn2($branch, $tgl) {
         if ($tgl == 1) {
             $sel = 'RKAP_INVS_QUARTER_I / 3';
@@ -1265,28 +1224,10 @@ class rkap_model extends CI_Model {
         return $query->result();
     }
 
-    public function get_rkap_po_kontrak() {
-        $query = $this->db->query("SELECT INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_ID,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_CONTRACT_DATE,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_CONTRACT_NO,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_TITTLE,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_CONTRACT_VALUE,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_ENDOF_GUARANTEE,INV_DASH.TX_RKAP_SUB_PROGRAM.RKAP_SUBPRO_CONTRACTOR FROM INV_DASH.TX_RKAP_SUB_PROGRAM");
-        return $query;
-    }
-
-    public function save_inves_ajax() {
-        $get_ai = $this->rkap_model->get_ai_id()->row()->AI;
-        $data = array(
-            'RKAP_INVS_ID' => $get_ai,
-            'RKAP_INVS_PROJECT_NUMBER' => $this->input->post('project_number'),
-            'RKAP_INVS_TITLE' => $this->input->post('judul_invest'),
-            'RKAP_INVS_TYPE' => $this->input->post('jenis_investasi'),
-            'RKAP_INVS_ASSETS' => $this->input->post('jenis_aktiva'),
-            'RKAP_INVS_COST_REQ' => $this->input->post('nilai'),
-                //'RKAP_INVS_YEAR' => $this->input->post('tahun_investasi'),
-        );
-        $result = $this->db->insert('TX_RKAP_INVESTATION', $data);
-        return $result;
-    }
-
-    public function get_ai_id() {
-        return $this->db->query("SELECT (NVL(MAX(TX_RI.\"RKAP_INVS_ID\"), 0))+1 AS AI FROM TX_RKAP_INVESTATION TX_RI");
+    public function get_po_kontrak() {
+        
     }
 
 }
+
+?>
